@@ -52,9 +52,29 @@ add_subdirectory(path/to/glfw)
 @endcode
 
 
+@subsubsection initmenu_34 macOS main menu now created at initialization
+
+GLFW now creates the main menu and completes the initialization of NSApplication
+during initialization.  Programs that do not want a main menu can disable it
+with the [GLFW_COCOA_MENUBAR](@ref GLFW_COCOA_MENUBAR_hint) init hint.
+
+
+@subsubsection corevideo_34 CoreVideo dependency has been removed
+
+GLFW no longer depends on the CoreVideo framework on macOS and it no longer
+needs to be specified during compilation or linking.
+
+
 @subsection deprecations_34 Deprecations in version 3.4
 
 @subsection removals_34 Removals in 3.4
+
+@subsubsection wl_shell_34 Support for the wl_shell protocol has been removed
+
+Support for the wl_shell protocol has been removed and GLFW now only supports
+the XDG-Shell protocol.  If your Wayland compositor does not support XDG-Shell
+then GLFW will fail to initialize.
+
 
 @subsection symbols_34 New symbols in version 3.4
 

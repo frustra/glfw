@@ -135,23 +135,24 @@ static GLFWbool chooseEGLConfig(const _GLFWctxconfig* ctxconfig,
 #endif
 
 #if defined(_GLFW_X11)
-        XVisualInfo vi = {0};
-
-        // Only consider EGLConfigs with associated Visuals
-        vi.visualid = getEGLConfigAttrib(n, EGL_NATIVE_VISUAL_ID);
-        if (!vi.visualid)
-            continue;
-
-        if (desired->transparent)
         {
-            int count;
-            XVisualInfo* vis = XGetVisualInfo(_glfw.x11.display,
-                                              VisualIDMask, &vi,
-                                              &count);
-            if (vis)
+            XVisualInfo vi = {0};
+
+            // Only consider EGLConfigs with associated Visuals
+            vi.visualid = getEGLConfigAttrib(n, EGL_NATIVE_VISUAL_ID);
+            if (!vi.visualid)
+                continue;
+
+            if (desired->transparent)
             {
-                u->transparent = _glfwIsVisualTransparentX11(vis[0].visual);
-                XFree(vis);
+                int count;
+                XVisualInfo* vis =
+                    XGetVisualInfo(_glfw.x11.display, VisualIDMask, &vi, &count);
+                if (vis)
+                {
+                    u->transparent = _glfwIsVisualTransparentX11(vis[0].visual);
+                    XFree(vis);
+                }
             }
         }
 #endif // _GLFW_X11
@@ -663,17 +664,16 @@ GLFWbool _glfwCreateContextEGL(_GLFWwindow* window,
     window->context.egl.surface = eglCreatePbufferSurface(_glfw.egl.display, config, attribs);
     #else
     // Set up attributes for surface creation
+    index = 0;
+
+    if (fbconfig->sRGB)
     {
-        int index = 0;
-
-        if (fbconfig->sRGB)
-        {
-            if (_glfw.egl.KHR_gl_colorspace)
-                setAttrib(EGL_GL_COLORSPACE_KHR, EGL_GL_COLORSPACE_SRGB_KHR);
-        }
-
-        setAttrib(EGL_NONE, EGL_NONE);
+        if (_glfw.egl.KHR_gl_colorspace)
+            setAttrib(EGL_GL_COLORSPACE_KHR, EGL_GL_COLORSPACE_SRGB_KHR);
     }
+
+    setAttrib(EGL_NONE, EGL_NONE);
+
     window->context.egl.surface =
         eglCreateWindowSurface(_glfw.egl.display,
                                config,

@@ -47,8 +47,6 @@
 // Define this to 1 if building GLFW for EGLHeadless
 #cmakedefine _GLFW_EGLHEADLESS
 
-// Define this to 1 if building as a shared library / dynamic library / DLL
-#cmakedefine _GLFW_BUILD_DLL
 // Define this to 1 to use Vulkan loader linked statically into application
 #cmakedefine _GLFW_VULKAN_STATIC
 
