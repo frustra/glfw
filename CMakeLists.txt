@@ -18,6 +18,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     set(GLFW_STANDALONE TRUE)
 endif()
 
+option(GLFW_TARGET_NAME "Build target name" glfw)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" ${GLFW_STANDALONE})
 option(GLFW_BUILD_TESTS "Build the GLFW test programs" ${GLFW_STANDALONE})
@@ -41,9 +42,9 @@ cmake_dependent_option(USE_MSVC_RUNTIME_LIBRARY_DLL "Use MSVC runtime library DL
 
 if (BUILD_SHARED_LIBS AND UNIX)
     # On Unix-like systems, shared libraries can use the soname system.
-    set(GLFW_LIB_NAME glfw)
+    set(GLFW_LIB_NAME ${GLFW_TARGET_NAME})
 else()
-    set(GLFW_LIB_NAME glfw3)
+    set(GLFW_LIB_NAME "${GLFW_TARGET_NAME}3")
 endif()
 
 if (GLFW_VULKAN_STATIC)
